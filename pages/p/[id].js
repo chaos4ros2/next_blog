@@ -30,6 +30,13 @@ const publishPost = async (id) => {
     await Router.push('/');
 }
 
+const deletePost = async (id) => {
+    await fetch(`/api/post/${id}`, {
+        method: 'DELETE',
+    });
+    Router.push('/');
+}
+
 const Post = (props) => {
     const { data: session, status } = useSession();
     if (status === 'loading') {
@@ -50,6 +57,9 @@ const Post = (props) => {
                 <ReactMarkdown children={props.content} />
                 {!props.published && userHasValidSession && postBelongsToUser && (
                     <button onClick={() => publishPost(props.id)}>Publish</button>
+                )}
+                {userHasValidSession && postBelongsToUser && ( 
+                    <button onClick={() => deletePost(props.id)}>Delete</button>
                 )}
             </div>
             <style jsx>{`
